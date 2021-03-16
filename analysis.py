@@ -15,6 +15,7 @@ class Analysis:
         data = pd.read_csv('data/{}.csv'.format(ticker), index_col='Date')
         data.index = pd.to_datetime(data.index)
 
+        outlier_data = pd.read_csv('data/{}_CLEANED_CSV.csv')
         self.ticker = ticker
         self.data = data
     
@@ -42,27 +43,6 @@ class Analysis:
         mpf_style = mpf.make_mpf_style(base_mpf_style='mike', marketcolors=colors)
         mpf.plot(data, type='line', style=mpf_style, volume=True)
 
-    # draws vetical lines on x axis for adj Close price
-    def season_comparison(self):
-        data = self.data
-        date = pd.Series(data.index).astype(str)
-        
-
-        years = date.str.split('-').str[0]
-        
-        adj_close = data['Adj Close']
-
-        
-
-        fig = plt.figure(figsize=(12,6))
-        plt.plot(date, adj_close, c='r')
-        plt.title('{} Adj Close Price (With Seasonal Comparison)'.format(self.ticker))
-        for yr in years:
-            # plt.axvline(pd.to_datetime(str(time)+'-01-01'), color='k', linestyle='--', alpha=0.2)
-            time_period = pd.to_datetime(str(yr)+'-01-27').year
-            plt.axvline(time_period, color='k', linestyle='--', alpha=0.2)
-        plt.show()
-    
     # average of past n values to today
     def moving_average(self):
         data = self.data
@@ -77,3 +57,21 @@ class Analysis:
         plt.title('{} Moving Avg vs Adj Close'.format(self.ticker))
         plt.legend()
         plt.show()
+
+    # draws vetical lines on x axis for adj Close price
+    # def season_comparison(self):
+    #     data = self.data
+    #     date = pd.Series(data.index).astype(str)
+    #     years = date.str.split('-').str[0]
+    #     adj_close = data['Adj Close']
+
+    #     fig = plt.figure(figsize=(12,6))
+    #     plt.plot(date, adj_close, c='r')
+    #     plt.title('{} Adj Close Price (With Seasonal Comparison)'.format(self.ticker))
+    #     for yr in years:
+    #         # plt.axvline(pd.to_datetime(str(time)+'-01-01'), color='k', linestyle='--', alpha=0.2)
+    #         time_period = pd.to_datetime(str(yr)+'-01-27').year
+    #         plt.axvline(time_period, color='k', linestyle='--', alpha=0.2)
+    #     plt.show()
+    
+    
