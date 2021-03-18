@@ -1,4 +1,5 @@
 import pandas as pd
+import datetime
 
 from extract import Extract
 from analysis import Analysis
@@ -7,21 +8,20 @@ from isolation_forests import Forest
 def main():
 
     # ticker = 'GME'
-    ticker = 'BTC-USD'
+    # ticker = 'BTC-USD' 
+    ticker = '^GSPC' # S&P 500 index
 
-    ext = Extract(ticker=ticker)
+    start = datetime.date(2021, 1, 1) # start looking at the stock
+    ext = Extract(ticker=ticker, start=start)
     data = ext.read_data()
     ext.convert_csv(data)
 
-    # ans = Analysis(ticker=ticker)
-    # ans.adj_close()
-    # ans.candlestick()
-    # ans.season_comparison()
-    # ans.moving_average()
     
-    fst = Forest(ticker=ticker)
+    fst = Forest(ticker=ticker, start=start)
     fst.model_outliers()
     
+    ans = Analysis(ticker=ticker, start=start)
+    ans.plot_outliers()
     
 
 if __name__ == '__main__':

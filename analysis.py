@@ -10,14 +10,17 @@ import mplfinance as mpf
 
 class Analysis:
 
-    def __init__(self, ticker):
+    def __init__(self, ticker, start):
         
         data = pd.read_csv('data/{}.csv'.format(ticker), index_col='Date')
         data.index = pd.to_datetime(data.index)
 
-        outlier_data = pd.read_csv('data/{}_CLEANED_CSV.csv')
+        outlier_data = pd.read_csv('data/{}_CLEANED_OUTLIERS.csv'.format(ticker))
+        self.outlier_data = outlier_data
+
         self.ticker = ticker
         self.data = data
+        self.start = start
     
     # basic line plot
     def adj_close(self):
@@ -58,20 +61,26 @@ class Analysis:
         plt.legend()
         plt.show()
 
-    # draws vetical lines on x axis for adj Close price
-    # def season_comparison(self):
-    #     data = self.data
-    #     date = pd.Series(data.index).astype(str)
-    #     years = date.str.split('-').str[0]
-    #     adj_close = data['Adj Close']
+    def plot_outliers(self):
+        outlier_data = self.outlier_data
+        outliers = outlier_data[outlier_data['Outlier'] == -1] 
 
-    #     fig = plt.figure(figsize=(12,6))
-    #     plt.plot(date, adj_close, c='r')
-    #     plt.title('{} Adj Close Price (With Seasonal Comparison)'.format(self.ticker))
-    #     for yr in years:
-    #         # plt.axvline(pd.to_datetime(str(time)+'-01-01'), color='k', linestyle='--', alpha=0.2)
-    #         time_period = pd.to_datetime(str(yr)+'-01-27').year
-    #         plt.axvline(time_period, color='k', linestyle='--', alpha=0.2)
-    #     plt.show()
+        days = 20
+        moving_avg = outlier_data['Adj Close'].rolling(window=days).mean() # the window decides the number of trading days
+        
+        fig = plt.figure(figsize=(16,8))
+        ax = fig.add_axes([0.1, 0.1, 0.8, 0.8]) # main axes
+        
+        ax.plot(outlier_data['Date'], outlier_data['Adj Close'], label='Adjusted Close', c='g')
+        ax.scatter(outliers['Date'], outliers['Adj Close'], label='Outliers', c='b')
+        ax.plot( moving_avg, label='Moving Average {}'.format(days), c='r')
+        ax.legend()
+        ax.set_xticks(outlier_data['Date'][::4])
+        
+        plt.title('{} Outliers'.format(self.ticker)) 
+        plt.savefig('graphs/{}_{}_Outliers'.format(self.ticker, self.start))
+        plt.show()
+        
+
     
     
