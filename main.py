@@ -7,9 +7,9 @@ from isolation_forests import Forest
 
 def main():
 
-    # ticker = 'GME'
-    # ticker = 'BTC-USD' 
-    ticker = '^GSPC' # S&P 500 index
+    ticker = 'GME' # Gamestop
+    # ticker = 'BTC-USD' # Bitcoin 
+    # ticker = '^GSPC' # S&P 500 index
 
     start = datetime.date(2021, 1, 1) # start looking at the stock
     ext = Extract(ticker=ticker, start=start)

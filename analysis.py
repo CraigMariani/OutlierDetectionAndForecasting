@@ -12,10 +12,10 @@ class Analysis:
 
     def __init__(self, ticker, start):
         
-        data = pd.read_csv('data/{}.csv'.format(ticker), index_col='Date')
+        data = pd.read_csv('data/{}_{}.csv'.format(ticker, start), index_col='Date')
         data.index = pd.to_datetime(data.index)
 
-        outlier_data = pd.read_csv('data/{}_CLEANED_OUTLIERS.csv'.format(ticker))
+        outlier_data = pd.read_csv('data/{}_{}_CLEANED_OUTLIERS.csv'.format(ticker, start))
         self.outlier_data = outlier_data
 
         self.ticker = ticker
@@ -57,7 +57,7 @@ class Analysis:
         fig = plt.figure(figsize=(12,6))
         plt.plot(date, moving_avg, c='blue', label='Moving Average')
         plt.plot(date, adj_cl, c='red', label='Adj Close')
-        plt.title('{} Moving Avg vs Adj Close'.format(self.ticker))
+        # plt.title('{} Moving Avg vs Adj Close'.format(self.ticker))
         plt.legend()
         plt.show()
 
@@ -75,7 +75,7 @@ class Analysis:
         ax.scatter(outliers['Date'], outliers['Adj Close'], label='Outliers', c='b')
         ax.plot( moving_avg, label='Moving Average {}'.format(days), c='r')
         ax.legend()
-        ax.set_xticks(outlier_data['Date'][::4])
+        ax.set_xticks(outlier_data['Date'][::5])
         
         plt.title('{} Outliers'.format(self.ticker)) 
         plt.savefig('graphs/{}_{}_Outliers'.format(self.ticker, self.start))

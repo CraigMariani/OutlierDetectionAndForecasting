@@ -16,7 +16,7 @@ after training the model, the output will be either
 class Forest:
 
     def __init__(self, ticker, start):
-        data = pd.read_csv('data/{}.csv'.format(ticker), index_col='Date')
+        data = pd.read_csv('data/{}_{}.csv'.format(ticker, start), index_col='Date')
         data.index = pd.to_datetime(data.index)
 
         self.ticker = ticker
@@ -25,24 +25,12 @@ class Forest:
     
     
     def model_outliers(self):
-        data = self.data
+        train_data = self.data
         # isolation forest model, it has 100 estimators
-        iso_model = IsolationForest(n_estimators=100)
+        iso_model = IsolationForest(n_estimators=)
 
-        # ordinal day pre processing
-        ordinal_day = np.arange(start=0, stop=len(data.index), step=1, dtype=int)
-        ordinal_day = np.array(ordinal_day).reshape(-1, 1)
-        data['Ordinal_Day'] = ordinal_day
-        
-        # we have a cut off date to see how accurate we are at detecting novelties(new data that is an anomally)
-        # test_data = data.loc[data['Ordinal_Day'] >= len(ordinal_day) - 5]
-        # train_data  = data.loc[data['Ordinal_Day'] < len(ordinal_day) - 5]
-        # test_adj_close = np.array(test_data['Adj Close']).reshape(-1, 1)
 
-        # without the cut off
-        train_data = data.loc[data['Ordinal_Day'] < len(ordinal_day) - 5]
         train_adj_close = np.array(train_data['Adj Close']).reshape(-1, 1)
-        
         iso_model.fit(train_adj_close)
 
         # looking for outliers by testing the already trained data outliers (-1) and inliers (1)
