@@ -15,11 +15,10 @@ def main():
     ext = Extract(ticker=ticker, start=start)
     data = ext.read_data()
     ext.convert_csv(data)
-
     
     fst = Forest(ticker=ticker, start=start)
     fst.model_outliers()
-    
+
     ans = Analysis(ticker=ticker, start=start)
     ans.plot_outliers()
     

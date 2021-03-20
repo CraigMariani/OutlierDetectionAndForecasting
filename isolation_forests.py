@@ -26,8 +26,8 @@ class Forest:
     
     def model_outliers(self):
         train_data = self.data
-        # isolation forest model, it has 100 estimators
-        iso_model = IsolationForest(n_estimators=)
+        # the number of estimators is how many decision trees we are using
+        iso_model = IsolationForest(n_estimators=100)
 
 
         train_adj_close = np.array(train_data['Adj Close']).reshape(-1, 1)
@@ -50,8 +50,3 @@ class Forest:
 
         
         train_data2.to_csv('data/{}_{}_CLEANED_OUTLIERS.csv'.format(self.ticker, self.start))
-    
-    def model_novelties(self):
-        pass
-
-
