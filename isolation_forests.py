@@ -2,10 +2,10 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from sklearn.model_selection import train_test_split 
-from sklearn.pipeline import make_pipeline
-from sklearn.ensemble import IsolationForest
 
+from sklearn.ensemble import IsolationForest
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import precision_score, recall_score
 '''
 Isolation Forest:
 after training the model, the output will be either 
@@ -23,7 +23,9 @@ class Forest:
         self.data = data
         self.start = start
     
-    
+
+
+    # labelling outliers
     def model_outliers(self):
         train_data = self.data
         # the number of estimators is how many decision trees we are using

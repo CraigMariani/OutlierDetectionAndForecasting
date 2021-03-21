@@ -73,7 +73,7 @@ class Analysis:
         
         ax.plot(outlier_data['Date'], outlier_data['Adj Close'], label='Adjusted Close', c='g')
         ax.scatter(outliers['Date'], outliers['Adj Close'], label='Outliers', c='b')
-        ax.plot( moving_avg, label='Moving Average {}'.format(days), c='r')
+        # ax.plot( moving_avg, label='Moving Average {}'.format(days), c='r')
         ax.legend()
         ax.set_xticks(outlier_data['Date'][::5])
         
